@@ -24,16 +24,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
       minLength: [6, "Password must be at least 6 characters long"],
-      select: false, // CRITICAL SECURITY: This hides the password when you query the user (e.g., User.find())
-    },
-    bio: {
-      type: String,
-      maxLength: [250, "Bio cannot exceed 250 characters"],
-    },
-    profileImage: {
-      type: String,
-      default: "https://ik.imagekit.io/gbr1bfkif/default_user.avif",
-    },
+    }
   },
   { timestamps: true }
 );
