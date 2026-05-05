@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
@@ -15,33 +15,27 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       lowercase: true, // Forces emails to be lowercase so "Yash@gmail.com" matches "yash@gmail.com"
-      match: [ // Regex to ensure it actually looks like an email
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        "Please provide a valid email address",
-      ],
     },
     password: {
       type: String,
       required: [true, "Password is required"],
-      minLength: [6, "Password must be at least 6 characters long"],
-    }
+      select: false,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
-
-
 
 // 1. Pre-save Hook: Hash password automatically before saving
 userSchema.pre("save", async function () {
-    // Only hash the password if it has been modified (or is new)
-    if (!this.isModified("password")) return ;
-    
-    this.password = await bcrypt.hash(this.password, 10);
+  // Only hash the password if it has been modified (or is new)
+  if (!this.isModified("password")) return;
+
+  this.password = await bcrypt.hash(this.password, 10);
 });
 
 // 2. Custom Method: Compare passwords
 userSchema.methods.matchPassword = async function (enteredPassword) {
-    return await bcrypt.compare(enteredPassword, this.password);
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
 const User = mongoose.model("User", userSchema);
