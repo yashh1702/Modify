@@ -1,6 +1,7 @@
 import React from 'react'
 import FormGroup from "../Components/FormGroup.jsx";
 import "../Style/register.scss"
+import {Link} from 'react-router-dom'
 
 
 const Register = () => {
@@ -16,6 +17,7 @@ const Register = () => {
             Login
           </button>
         </form>
+        <p>Already have an account? <Link to="/login">Login here</Link></p>
       </div>
     </main>
   );
