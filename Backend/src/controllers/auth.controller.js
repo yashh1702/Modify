@@ -46,7 +46,7 @@ const registerUser = async function (req, res) {
 };
 
 const loginUser = async function (req, res) {
-  const { email, password, username } = req.body;
+  const { email , username } = req.body;
 
   const user = await User.findOne({
     $or: [{ email }, { username }],
