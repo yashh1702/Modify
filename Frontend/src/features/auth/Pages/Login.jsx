@@ -1,21 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import FormGroup from "../Components/FormGroup.jsx";
-import "../Style/login.scss"
-import {Link} from 'react-router-dom'
+import "../Style/login.scss";
+import { Link } from "react-router-dom";
+import { useAuth } from "../Hooks/useAuth.js";
+import {useNavigate} from 'react-router-dom'
 
 const Login = () => {
+  const { handleLogin } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate()
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    await handleLogin({email,password})
+    navigate("/")
+  }
+
   return (
     <main className="login-page">
       <div className="form-container">
         <h1>Login</h1>
-        <form>
-          <FormGroup label="Email" placeholder="Enter your email" type="email" />
-          <FormGroup label="Password" placeholder="Enter your password" type="password" />
+        <form onSubmit={handleSubmit}>
+          <FormGroup
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            label="Email"
+            placeholder="Enter your email "
+            type="email"
+          />
+          <FormGroup
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            label="Password"
+            placeholder="Enter your password"
+            type="password"
+          />
           <button className="button" type="submit">
             Login
           </button>
         </form>
-        <p>Don't have an account? <Link to="/register">Register here</Link></p>
+        <p>
+          Don't have an account? <Link to="/register">Register here</Link>
+        </p>
       </div>
     </main>
   );
